@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, 'networks')
 from q_v_transformer import CoAttention
 from gcn import AdjLearner, GCN
-from block import fusions #pytorch >= 1.1.0
+from block import fusions
 
 
 class HGA(nn.Module):
