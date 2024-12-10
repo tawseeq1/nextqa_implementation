@@ -26,7 +26,7 @@ def main(args):
     glove_embed = 'dataset/{}/glove_embed.npy'.format(dataset)
     use_bert = True #Otherwise GloVe
     checkpoint_path = 'models'
-    model_type = 'HGA' #(EVQA, STVQA, CoMem, HME, HGA)
+    model_type = 'minicpmv' #(EVQA, STVQA, CoMem, HME, HGA)
     model_prefix= 'bert-ft-h256'
 
     vis_step = 106

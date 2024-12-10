@@ -1,5 +1,5 @@
 from networks import EncoderRNN, embed_loss
-from networks.VQAModel import EVQA, STVQA, CoMem, HME, HGA
+from networks.VQAModel import EVQA, STVQA, CoMem, HME, HGA , minicpmv
 from utils import *
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch
@@ -42,8 +42,19 @@ class VideoQA():
                                                 bidirectional=False, rnn_cell='lstm')
             qns_encoder = EncoderRNN.EncoderQns(word_dim, hidden_dim, vocab_size, self.glove_embed, self.use_bert, n_layers=1,
                                                 input_dropout_p=0.2, rnn_dropout_p=0, bidirectional=False, rnn_cell='lstm')
-
+ 
             self.model = EVQA.EVQA(vid_encoder, qns_encoder, self.device)
+
+        elif self.model_type == 'minicpmv':
+        
+            vid_dim = 1024  # (64, 1024+2048, 7, 7)
+            att_dim = 256
+            vid_encoder = EncoderRNN.EncoderVid(vid_dim, hidden_dim, input_dropout_p=0.2, rnn_dropout_p=0,
+                                                     n_layers=1, rnn_cell='lstm')
+            qns_encoder = EncoderRNN.EncoderQns(word_dim, hidden_dim, vocab_size, self.glove_embed, self.use_bert,
+                                                input_dropout_p=0.2, rnn_dropout_p=0.5, n_layers=2, rnn_cell='lstm')
+
+            self.model = minicpmv.MiniCPMV(vid_encoder, qns_encoder, att_dim, self.device)
 
         elif self.model_type == 'STVQA':
             #CVPR17
